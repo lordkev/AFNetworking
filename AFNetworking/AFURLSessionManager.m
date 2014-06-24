@@ -438,14 +438,47 @@ expectedTotalBytes:(int64_t)expectedTotalBytes {
 #pragma mark -
 
 - (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
-                            completionHandler:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler
+                               uploadProgress:(NSProgress * __autoreleasing *)uploadProgress
+                             downloadProgress:(NSProgress * __autoreleasing *)downloadProgress
+                            completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler
 {
     NSURLSessionDataTask *dataTask = [self.session dataTaskWithRequest:request];
 
     AFURLSessionManagerTaskDelegate *delegate = [AFURLSessionManagerTaskDelegate delegateForManager:self completionHandler:completionHandler];
+
+    int64_t totalUnitCount = uploadTask.countOfBytesExpectedToSend;
+    if(totalUnitCount == NSURLSessionTransferSizeUnknown) {
+        NSString *contentLength = [dataTask.originalRequest valueForHTTPHeaderField:@"Content-Length"];
+        if(contentLength) {
+            totalUnitCount = (int64_t) [contentLength longLongValue];
+        }
+    }
+
+    delegate.uploadProgress = [NSProgress progressWithTotalUnitCount:totalUnitCount];
+    delegate.uploadProgress.pausingHandler = ^{
+        [dataTask suspend];
+    };
+    delegate.uploadProgress.cancellationHandler = ^{
+        [dataTask cancel];
+    };
+
+    if (uploadProgress) {
+        *uploadProgress = delegate.uploadProgress;
+    }
+
+    if (downloadProgress) {
+        *downloadProgress = delegate.downloadProgress;
+    }
+
     [self setDelegate:delegate forTask:dataTask];
 
     return dataTask;
+}
+
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                            completionHandler:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler
+{
+    return [self dataTaskWithRequest:request uploadProgress:nil downloadProgress:nil completionHandler:completionHandler];
 }
 
 #pragma mark -
