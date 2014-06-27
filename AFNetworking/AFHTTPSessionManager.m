@@ -109,12 +109,13 @@
 
 - (NSURLSessionDataTask *)GET:(NSString *)URLString
                    parameters:(NSDictionary *)parameters
+                     progress:(NSProgress * __autoreleasing *)progress
                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
 
-    __block NSURLSessionDataTask *task = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
+    __block NSURLSessionDataTask *task = [self dataTaskWithRequest:request uploadProgress:nil downloadProgress:progress completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error) {
             if (failure) {
                 failure(task, error);
@@ -129,6 +130,14 @@
     [task resume];
 
     return task;
+}
+
+- (NSURLSessionDataTask *)GET:(NSString *)URLString
+                   parameters:(NSDictionary *)parameters
+                      success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                      failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+{
+    return [self GET:URLString parameters:parameters progress:nil success:success failure:failure];
 }
 
 - (NSURLSessionDataTask *)HEAD:(NSString *)URLString
@@ -157,12 +166,13 @@
 
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
                     parameters:(NSDictionary *)parameters
+                      progress:(NSProgress * __autoreleasing *)progress
                        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
 
-    __block NSURLSessionDataTask *task = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
+    __block NSURLSessionDataTask *task = [self dataTaskWithRequest:request uploadProgress:progress downloadProgress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error) {
             if (failure) {
                 failure(task, error);
@@ -177,6 +187,14 @@
     [task resume];
 
     return task;
+}
+
+- (NSURLSessionDataTask *)POST:(NSString *)URLString
+                    parameters:(NSDictionary *)parameters
+                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+{
+    return [self POST:URLString parameters:parameters progress:nil success:success failure:failure];
 }
 
 - (NSURLSessionDataTask *)POST:(NSString *)URLString

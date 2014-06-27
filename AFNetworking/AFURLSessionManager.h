@@ -185,6 +185,19 @@
  Creates an `NSURLSessionDataTask` with the specified request.
 
  @param request The HTTP request for the request.
+ @param uploadProgress A progress object monitoring the current upload progress.
+ @param downloadProgress A progress object monitoring the current download progress.
+ @param completionHandler A block object to be executed when the task finishes. This block has no return value and takes three arguments: the server response, the response object created by that serializer, and the error that occurred, if any.
+ */
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                               uploadProgress:(NSProgress * __autoreleasing *)uploadProgress
+                             downloadProgress:(NSProgress * __autoreleasing *)downloadProgress
+                            completionHandler:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler;
+
+/**
+ Creates an `NSURLSessionDataTask` with the specified request.
+
+ @param request The HTTP request for the request.
  @param completionHandler A block object to be executed when the task finishes. This block has no return value and takes three arguments: the server response, the response object created by that serializer, and the error that occurred, if any.
  */
 - (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
