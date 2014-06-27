@@ -446,7 +446,7 @@ expectedTotalBytes:(int64_t)expectedTotalBytes {
 
     AFURLSessionManagerTaskDelegate *delegate = [AFURLSessionManagerTaskDelegate delegateForManager:self completionHandler:completionHandler];
 
-    int64_t totalUnitCount = uploadTask.countOfBytesExpectedToSend;
+    int64_t totalUnitCount = dataTask.countOfBytesExpectedToSend;
     if(totalUnitCount == NSURLSessionTransferSizeUnknown) {
         NSString *contentLength = [dataTask.originalRequest valueForHTTPHeaderField:@"Content-Length"];
         if(contentLength) {
