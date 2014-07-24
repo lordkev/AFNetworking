@@ -1,6 +1,6 @@
 // AFHTTPSessionManager.h
 //
-// Copyright (c) 2013 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013-2014 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -70,7 +70,7 @@
 
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
 
-@interface AFHTTPSessionManager : AFURLSessionManager <NSCoding, NSCopying>
+@interface AFHTTPSessionManager : AFURLSessionManager <NSSecureCoding, NSCopying>
 
 /**
  The URL used to monitor reachability, and construct requests from relative paths in methods like `requestWithMethod:URLString:parameters:`, and the `GET` / `POST` / et al. convenience methods.
@@ -154,7 +154,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)GET:(NSString *)URLString
-                   parameters:(NSDictionary *)parameters
+                   parameters:(id)parameters
                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
@@ -169,7 +169,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)HEAD:(NSString *)URLString
-                    parameters:(NSDictionary *)parameters
+                    parameters:(id)parameters
                        success:(void (^)(NSURLSessionDataTask *task))success
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
@@ -201,7 +201,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
-                    parameters:(NSDictionary *)parameters
+                    parameters:(id)parameters
                        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
@@ -217,7 +217,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
-                    parameters:(NSDictionary *)parameters
+                    parameters:(id)parameters
      constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
                        success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
@@ -233,7 +233,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)PUT:(NSString *)URLString
-                   parameters:(NSDictionary *)parameters
+                   parameters:(id)parameters
                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
@@ -248,7 +248,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)PATCH:(NSString *)URLString
-                     parameters:(NSDictionary *)parameters
+                     parameters:(id)parameters
                         success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                         failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
@@ -263,7 +263,7 @@
  @see -dataTaskWithRequest:completionHandler:
  */
 - (NSURLSessionDataTask *)DELETE:(NSString *)URLString
-                      parameters:(NSDictionary *)parameters
+                      parameters:(id)parameters
                          success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                          failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
