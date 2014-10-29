@@ -80,7 +80,7 @@ static void * AFTaskCountOfBytesReceivedContext = &AFTaskCountOfBytesReceivedCon
     // To fix KVO crashes due to buggy KVO implementation in NSURLSessionTask
     // TODO: more elegant solution that leaves KVO enabled
     //[task addObserver:self forKeyPath:@"state" options:0 context:AFTaskCountOfBytesSentContext];
-    [task addObserver:self forKeyPath:@"countOfBytesSent" options:0 context:AFTaskCountOfBytesSentContext];
+    [task addObserver:self forKeyPath:@"countOfBytesSent" options:(NSKeyValueObservingOptions)0 context:AFTaskCountOfBytesSentContext];
 
     [self af_setUploadProgressAnimated:animated];
 }
@@ -91,7 +91,7 @@ static void * AFTaskCountOfBytesReceivedContext = &AFTaskCountOfBytesReceivedCon
     // To fix KVO crashes due to buggy KVO implementation in NSURLSessionTask
     // TODO: more elegant solution that leaves KVO enabled
     //[task addObserver:self forKeyPath:@"state" options:0 context:AFTaskCountOfBytesReceivedContext];
-    [task addObserver:self forKeyPath:@"countOfBytesReceived" options:0 context:AFTaskCountOfBytesReceivedContext];
+    [task addObserver:self forKeyPath:@"countOfBytesReceived" options:(NSKeyValueObservingOptions)0 context:AFTaskCountOfBytesReceivedContext];
 
     [self af_setDownloadProgressAnimated:animated];
 }
